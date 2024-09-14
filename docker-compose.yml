@@ -1,0 +1,36 @@
+version: "3.8"
+
+networks:
+  db_backend:
+    name: "db_backend"
+  gateway:
+    external: true
+    name: "gateway"
+
+services:
+  db:
+    image: postgres:15.8-alpine
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    networks:
+      - db_backend
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - $INSTALL_DIR/db:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:4.23
+    container_name: pgadmin4
+    restart: unless-stopped
+    networks:
+      - db_backend
+      - gateway
+    environment:
+      PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_EMAIL
+      PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PASSWORD
+    volumes:
+      - $INSTALL_DIR/pgadmin:/var/lib/pgadmin
