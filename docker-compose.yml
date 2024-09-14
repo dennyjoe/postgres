@@ -23,7 +23,7 @@ services:
       - $INSTALL_DIR/db:/var/lib/postgresql/data
 
   pgadmin:
-    image: dpage/pgadmin4:6.11
+    image: dpage/pgadmin4
     container_name: pgadmin4
     restart: unless-stopped
     networks:
